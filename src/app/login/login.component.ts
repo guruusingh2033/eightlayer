@@ -7,7 +7,7 @@ import {LocalStorageService} from 'ngx-webstorage';
 import {Router} from '@angular/router';
 import {NgZone} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-// import {ForgotPasswordService} from './forgot-password.service';
+import {ForgotPasswordService} from './forgot-password.service';
 //import './updater.js';
 declare var orgId: any;
 declare var myExtObject: any;
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   // lib = new electronNotification();
 
   constructor(
-    // private forgotPasswordService: ForgotPasswordService,
+    private forgotPasswordService: ForgotPasswordService,
     private httpClient: HttpClient,
     private router: Router,
     private zone: NgZone,
@@ -81,16 +81,16 @@ export class LoginComponent implements OnInit {
       "username": this.emailForget
     }
     console.log("localStorage.getItem(Orgnisation_id) => ", localStorage.getItem("Orgnisation_id"))
-    // this.forgotPasswordService.postPasswordForget(localStorage.getItem("Orgnisation_id"), postJSON).subscribe(post => {
-    //   console.log("post", post);
+    this.forgotPasswordService.postPasswordForget(localStorage.getItem("Orgnisation_id"), postJSON).subscribe(post => {
+      console.log("post", post);
 
-    //   this.emailFailError = false;
-    //   this.passwordFail = false;
-    //   this.passwordSuccess = true;
-    // }, error => {
-    //   console.log("ERRORRRR", error);
-    //   this.emailFailError = true;
-    // })
+      this.emailFailError = false;
+      this.passwordFail = false;
+      this.passwordSuccess = true;
+    }, error => {
+      console.log("ERRORRRR", error);
+      this.emailFailError = true;
+    })
   }
 
   isResetPasswordError = false;
@@ -103,20 +103,20 @@ export class LoginComponent implements OnInit {
       "passwordresetcode": this.passcodeForget,
       "newpassword": this.passwordForget
     }
-    // this.forgotPasswordService.postPasswordReset(localStorage.getItem("Orgnisation_id"), postJSON).subscribe(post => {
-    //   console.log("post", post);
-    //   this.forgotPasswordSuccess = true;
-    //   this.isResetPasswordError = false;
-    //   document.getElementById("forgotPopup").classList.remove("in");
-    //   this.emailForget = "";
-    //   this.passcodeForget = "";
-    //   this.passwordForget = "";
+    this.forgotPasswordService.postPasswordReset(localStorage.getItem("Orgnisation_id"), postJSON).subscribe(post => {
+      console.log("post", post);
+      this.forgotPasswordSuccess = true;
+      this.isResetPasswordError = false;
+      document.getElementById("forgotPopup").classList.remove("in");
+      this.emailForget = "";
+      this.passcodeForget = "";
+      this.passwordForget = "";
 
-    // }, error => {
-    //   this.isResetPasswordError = true;
-    //   this.resetPasswordErrorMessage = error;
+    }, error => {
+      this.isResetPasswordError = true;
+      this.resetPasswordErrorMessage = error;
 
-    // })
+    })
     console.log("on subm 2");
   }
 
