@@ -67,7 +67,7 @@ function createWindow() {
   }]);
   tray.setContextMenu(contextMenu);
 //// uncomment below to open the DevTools.
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
   console.log("process.argv = " + process.argv0);
   global.sharedObject = {prop1: process.argv0};
 
