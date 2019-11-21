@@ -30,7 +30,7 @@
   "scripts": {
     "ng": "ng",
     "programbuild": "build",
-    "start": "ng build && electron .",
+    "start": "electron .",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
