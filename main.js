@@ -136,3 +136,7 @@ app.on('ready', function () {
 ipcMain.on('show-about-window-event', function () {
   win.show();
 });
+
+ipcMain.on('hide-window-app', function () {
+  win.hide();
+});

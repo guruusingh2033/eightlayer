@@ -13,6 +13,7 @@ declare var orgId: any;
 declare var myExtObject: any;
 declare var require: any;
 declare var fs: any;
+declare var electron: any;
 
 @Component({
   selector: 'app-login',
@@ -66,6 +67,10 @@ export class LoginComponent implements OnInit {
 
   })
 
+  hideWindow(){
+    electron.ipcRenderer.send('hide-window-app')
+  }
+  
   onForgetPassword() {
     document.getElementById("forgotPopup").classList.add("in");
     console.log("on Forget password");

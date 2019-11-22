@@ -38,6 +38,7 @@
 
   window.$ = window.jQuery = require("./assets/js/bootstrap/jquery.min.js");
   // window.fs = require('fs');myData
+  var electron = require('electron');
   var remote = require('electron').remote,
       arguments = remote.getGlobal('sharedObject').prop1;
      localStorage.setItem("basePath", arguments);
@@ -49,7 +50,7 @@
   </script>
   <script>
 const fs = require('fs');
-          </script>
+   </script>
   <script src="assets/renderer.js"></script>
   <script src="assets/updater.js"></script>
   <script src="assets/custom-js/bootstrap/jquery.min.js"></script>
