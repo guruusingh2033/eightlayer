@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone} from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import {NotificationService} from "../services/notification.service";
-declare var notification: any;
+import { Router } from '@angular/router';
+declare var notifier: any;
+declare var electron: any;
 
 
 
@@ -13,32 +15,37 @@ declare var notification: any;
 export class AppComponent implements OnInit  {
   // hideVar:boolean
   entId;
-   constructor(private httpClient:HttpClient,
-               private notificationService: NotificationService){
-
-
-   }
+   constructor(private httpClient:HttpClient,private router: Router,private zone: NgZone,
+               private notificationService: NotificationService){}
    sessionStorage():any{
 
       //alert("asdadsaasdadasdasda");
       sessionStorage.removeItem("accessToken");
      }
 
+  notify(){
+    notifier.notify(
+      {
+        title: "Quiz Notification",
+        message: "There is a quiz prepared and ready for you." +
+          "Take 5 Minutes and complete the session." +
+          "Do you want to take it now?",
+        sound: true, // Only Notification Center or Windows Toasters
+        wait: true, // Wait with callback, until user action is taken against notification
+        actions: ["Start", "Later"]
+      }
+    );
+    notifier.on('start', ()=> {
+      this.zone.run(() => {    
+        electron.ipcRenderer.send('show-about-window-event')
+        this.router.navigateByUrl('/showQuiz');
+      });
+    }); 
+  }
+
 
   ngOnInit() {
-    new notification();
-    this.entId = localStorage.getItem("Orgnisation_id");
-    this.notificationService.getQuizSchedule(this.entId).subscribe(data => {
-      console.log('Quiz status', data);
-      if(data) {
-        if (data.body.data.length !== 0) {
-          new notification('Quiz Notification', "There is a quiz prepared and ready for you." +
-            "Take 5 Minutes and complete the session." +
-            "Do you want to take it now?");
-        }
-      }
-    });
-    console.log('login page');
+    this.notify();
   }
     //console.log("app.component is calling");
     // this.hideVar = true;
