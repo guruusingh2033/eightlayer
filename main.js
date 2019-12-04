@@ -2,6 +2,7 @@
 const {app, BrowserWindow, Tray, ipcMain, Menu} = require('electron')
 var url = require('url');
 var path = require('path');
+const notifier = require('node-notifier');
 var AutoLaunch = require('auto-launch');
 // const {autoUpdater} = require("electron-updater");
 const log = require('electron-log');
@@ -67,7 +68,7 @@ function createWindow() {
   }]);
   tray.setContextMenu(contextMenu);
 //// uncomment below to open the DevTools.
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
   console.log("process.argv = " + process.argv0);
   global.sharedObject = {prop1: process.argv0};
 
@@ -139,4 +140,28 @@ ipcMain.on('show-about-window-event', function () {
 
 ipcMain.on('hide-window-app', function () {
   win.hide();
+});
+ipcMain.on('notifier', function (event,args) {
+  notifier.notify({
+    title: "Quiz Notification",
+    message: "There is a quiz prepared and ready for you." +
+      "Take 5 Minutes and complete the session." +
+      "Do you want to take it now?",
+    sound: true,
+    wait: true,
+    actions: ["Start", "Later"]
+  });
+  notifier.on('later', () => {
+      setTimeout(() => {
+        notifier.notify({
+          title: "Quiz Notification",
+          message: "There is a quiz prepared and ready for you." +
+            "Take 5 Minutes and complete the session." +
+            "Do you want to take it now?",
+          sound: true,
+          wait: true,
+          actions: ["Start", "Later"]
+        });
+      }, 3600000*4)
+  }); 
 });
