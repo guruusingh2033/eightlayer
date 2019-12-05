@@ -141,27 +141,8 @@ ipcMain.on('show-about-window-event', function () {
 ipcMain.on('hide-window-app', function () {
   win.hide();
 });
-ipcMain.on('notifier', function (event,args) {
-  notifier.notify({
-    title: "Quiz Notification",
-    message: "There is a quiz prepared and ready for you." +
-      "Take 5 Minutes and complete the session." +
-      "Do you want to take it now?",
-    sound: true,
-    wait: true,
-    actions: ["Start", "Later"]
-  });
-  notifier.on('later', () => {
-      setTimeout(() => {
-        notifier.notify({
-          title: "Quiz Notification",
-          message: "There is a quiz prepared and ready for you." +
-            "Take 5 Minutes and complete the session." +
-            "Do you want to take it now?",
-          sound: true,
-          wait: true,
-          actions: ["Start", "Later"]
-        });
-      }, 3600000*4)
-  }); 
+ipcMain.on('notification-timer', function (event,args) {
+  setTimeout(() => {
+    event.returnValue = "Timer Completed"
+  }, 3600000*4)
 });

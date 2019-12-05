@@ -1,9 +1,6 @@
 import { Component, OnInit, NgZone} from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import {NotificationService} from "../services/notification.service";
 import { Router } from '@angular/router';
-import 'rxjs/add/observable/interval';
-import { Observable } from 'rxjs/Observable';
 declare var notifier: any;
 declare var electron: any;
 
@@ -17,8 +14,7 @@ declare var electron: any;
 export class AppComponent implements OnInit  {
   // hideVar:boolean
   entId;
-   constructor(private httpClient:HttpClient,private router: Router,private zone: NgZone,
-               private notificationService: NotificationService){}
+   constructor(private httpClient:HttpClient,private router: Router,private zone: NgZone){}
    sessionStorage():any{
 
       //alert("asdadsaasdadasdasda");
@@ -37,21 +33,20 @@ export class AppComponent implements OnInit  {
         actions: ["Start", "Later"]
       }
     );
-    notifier.on('start', ()=> {
-      this.zone.run(() => {    
-        electron.ipcRenderer.send('show-about-window-event')
-        this.router.navigateByUrl('/showQuiz');
-      });
-    }); 
-    notifier.on('later', ()=> {
-      setTimeout(()=>{
-        electron.ipcRenderer.send('notifier')
-      },3600000*4)
-    }); 
   }
 
 
   ngOnInit() {
+    notifier.on('start', () => {
+      this.zone.run(() => {
+        electron.ipcRenderer.send('show-about-window-event')
+        this.router.navigateByUrl('/showQuiz');
+      });
+    });
+    notifier.on('later', () => {
+      var timer = electron.ipcRenderer.sendSync('notification-timer')
+      this.notify();
+    }); 
     this.notify();
   }
     //console.log("app.component is calling");
