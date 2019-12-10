@@ -12,7 +12,6 @@ import { Questiontype3Component } from './questiontype3/questiontype3.component'
 import { QuestionListComponent } from './question-list/question-list.component';
 //import { ClienhomeComponent } from './clienhome/clienhome.component';
 import { QuizeComponent } from './quize/quize.component';
-import { ShowQuizeComponent } from './show-quize/show-quize.component';
 import { ClientlessonsComponent } from './clientlessons/clientlessons.component';
 import { SiteAdminHomeComponent } from './site-admin-home/site-admin-home.component';
 import { SiteAdminAlertComponent } from './site-admin-alert/site-admin-alert.component';
@@ -25,7 +24,6 @@ import {LessonListComponent} from "./lesson-list/lesson-list.component";
 
 const routes: Routes = [
     { path: '', component: LoginComponent, pathMatch: 'full' },
-    { path: 'showQuiz', component: ShowQuizeComponent, pathMatch: 'full' },
     { path: 'SuperAdmin', component: AllComponent, pathMatch: 'full' },
     { path: 'client', component: ClientEnterpriseComponent, pathMatch: 'full' },
     { path: 'client/listuser/:id', component:  ListuserComponent, pathMatch: 'full' },

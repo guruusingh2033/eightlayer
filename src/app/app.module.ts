@@ -46,7 +46,6 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import {QuizService} from "../services/quiz.service";
 import {LessonListComponent} from "./lesson-list/lesson-list.component";
 import {QuestionService} from "../services/question.service";
-import { ShowQuizeComponent } from './show-quize/show-quize.component';
 declare var $: any;
 @NgModule({
   declarations: [
@@ -79,8 +78,7 @@ declare var $: any;
     SiteAdminReportsComponent,
     RatingComponent,
     ScheduleComponent,
-    LessonListComponent,
-    ShowQuizeComponent
+    LessonListComponent
   ],
   imports: [
     BrowserModule,

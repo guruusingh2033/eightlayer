@@ -1,6 +1,8 @@
 import { Component, OnInit, NgZone} from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
+import {NotificationService} from "../services/notification.service";
+
 declare var notifier: any;
 declare var electron: any;
 
@@ -14,7 +16,8 @@ declare var electron: any;
 export class AppComponent implements OnInit  {
   // hideVar:boolean
   entId;
-   constructor(private httpClient:HttpClient,private router: Router,private zone: NgZone){}
+   constructor(private httpClient:HttpClient,private router: Router,private zone: NgZone,
+    private notificationService: NotificationService){}
    sessionStorage():any{
 
       //alert("asdadsaasdadasdasda");
@@ -37,17 +40,30 @@ export class AppComponent implements OnInit  {
 
 
   ngOnInit() {
+    this.entId = localStorage.getItem("Orgnisation_id");
+    var quizData = electron.ipcRenderer.sendSync('check-quiz-exist', this.entId)
+    console.log("data recieved ", quizData)
+    if (quizData.body.data.length >0 )
+    this.notify()
+    
+    
+
     notifier.on('start', () => {
       this.zone.run(() => {
+        var tokenExists = localStorage.getItem("accessToken");
+        if (tokenExists != null && tokenExists != undefined){
         electron.ipcRenderer.send('show-about-window-event')
-        this.router.navigateByUrl('/showQuiz');
+        this.router.navigateByUrl('/quiz');
+        }
       });
     });
     notifier.on('later', () => {
       var timer = electron.ipcRenderer.sendSync('notification-timer')
-      this.notify();
+      var quizData = electron.ipcRenderer.sendSync('check-quiz-exist', this.entId)
+      console.log("data recieved2 ", quizData)
+      if (quizData.body.data.length > 0)
+      this.notify()
     }); 
-    this.notify();
   }
     //console.log("app.component is calling");
     // this.hideVar = true;

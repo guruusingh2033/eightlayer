@@ -6,6 +6,8 @@ const notifier = require('node-notifier');
 var AutoLaunch = require('auto-launch');
 // const {autoUpdater} = require("electron-updater");
 const log = require('electron-log');
+const https = require('https');
+
 // window.ipcRenderer = require('electron').ipcRenderer;
 let tray = null;
 let win;
@@ -134,8 +136,26 @@ app.on('ready', function () {
   // autoUpdater.checkForUpdatesAndNotify();
 });
 
-ipcMain.on('show-about-window-event', function () {
+ipcMain.on('show-about-window-event', function (event ,args) {
   win.show();
+});
+
+ipcMain.on('check-quiz-exist', function (event ,entId) {
+  https.get("https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/quizenotification?entid=" + entId, (resp) => {
+    let data = '';
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      console.log("Got DATA")
+      data += chunk;
+    });
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log("END DATA")
+      event.returnValue = (JSON.parse(data));
+    });
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
 });
 
 ipcMain.on('hide-window-app', function () {
