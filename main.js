@@ -55,7 +55,7 @@ function createWindow() {
   }));
 //win.loadURL(`file://${__dirname}/src/index.html`)
 //win.loadURL(`http://localhost:4200/login`)
-  win.maximize();
+  // win.maximize();
   win.hide();
   tray = new Tray(__dirname + '/src/assets/img/favicon/8-layer-logo-v3.png');
   tray.setToolTip('EightLayerApp');
@@ -70,7 +70,7 @@ function createWindow() {
   }]);
   tray.setContextMenu(contextMenu);
 //// uncomment below to open the DevTools.
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
   console.log("process.argv = " + process.argv0);
   global.sharedObject = {prop1: process.argv0};
 
@@ -140,29 +140,41 @@ ipcMain.on('show-about-window-event', function (event ,args) {
   win.show();
 });
 
-ipcMain.on('check-quiz-exist', function (event ,entId) {
-  https.get("https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/quizenotification?entid=" + entId, (resp) => {
-    let data = '';
-    // A chunk of data has been recieved.
-    resp.on('data', (chunk) => {
-      console.log("Got DATA")
-      data += chunk;
-    });
-    // The whole response has been received. Print out the result.
-    resp.on('end', () => {
-      console.log("END DATA")
-      event.returnValue = (JSON.parse(data));
-    });
-  }).on("error", (err) => {
-    console.log("Error: " + err.message);
-  });
+ipcMain.on('check-quiz-and-notify', function (event ,entId) {
+  getScheduledQuiz(event,entId)
 });
 
 ipcMain.on('hide-window-app', function () {
   win.hide();
 });
-ipcMain.on('notification-timer', function (event,args) {
+
+ipcMain.on('snooze-notification', function (event,entId) {
   setTimeout(() => {
-    event.returnValue = "Timer Completed"
+    getScheduledQuiz(event, entId)
   }, 3600000*4)
 });
+
+ipcMain.on('schedule-notification', function (event,entId) {
+   setInterval(() => {
+    var date = new Date();
+    if (date.getHours() === 9 && date.getMinutes() === 0) {
+      getScheduledQuiz(event, entId)
+    }
+  }, 60000);
+});
+
+function getScheduledQuiz(event,entId){
+  https.get("https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/quizenotification?entid=" + entId, (resp) => {
+    let data = '';
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+    resp.on('end', () => {
+      data = JSON.parse(data);
+      if (data.body.data.length > 0)
+        event.sender.send('scheduled-notification-response', data.body.data);
+    });
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+}

@@ -29,13 +29,8 @@ let filePath = path.join(__dirname, '../config/JsonInputNew.json');
 var basePath = localStorage.getItem("ExePath");
 // console.log("basePath=" + basePath);
 const { dialog } = require('electron').remote;
-fs.readFile(filePath, 'utf-8', (err, data) => {
-  if (err) {
-    console.log('error', err.message);
-    return;
-  }
-  var myData = JSON.parse(data);
-  console.log("myData ", myData.eight_layer_api_url_orgId);
-  var org_id = myData.eight_layer_api_url_orgId;
-  localStorage.setItem("Orgnisation_id", org_id);
-});
+let myData = fs.readFileSync(filePath, 'utf-8')
+myData = JSON.parse(myData);
+console.log("myData ", myData.eight_layer_api_url_orgId);
+var org_id = myData.eight_layer_api_url_orgId;
+localStorage.setItem("Orgnisation_id", org_id);

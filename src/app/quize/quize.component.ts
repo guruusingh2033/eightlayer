@@ -88,7 +88,7 @@ export class QuizeComponent implements OnInit {
   duration;
   lessonDiv = true;
   questionDiv = true;
-  listDiv = true;
+  listDiv = false;
   userLevelDiv = false;
   explanation;
   quizeListData: any = [];
@@ -693,27 +693,37 @@ export class QuizeComponent implements OnInit {
 
     });
   }
-
+  
   ngOnInit() {
     this.showSpinner = true;
+    var lesson = localStorage.getItem("scheduled_quiz_lesson");
+    localStorage.removeItem('scheduled_quiz_lesson');
+
+    if (lesson != null && lesson != "undefined" && lesson != "null") {
+      this.listDiv = false
+      this.showLesson(lesson)
+    }
+    else{
+      this.listDiv = true
+    }
     this.entId = localStorage.getItem("enterpriseId");
     this.quizService.getChapterList()
-      .subscribe(response => {
-        this.quizeData = response.body;
-        console.log('quizeData', this.quizeData);
-        this.quizeData.data.filter((x) => {
-          if(x.quiz_status === 0 && x.entid === parseInt(this.entId)) {
-            this.quizeListData.push(x)
-            this.chapterCode = x.lessons_included;
-            this.duration = x.duration;
-            this.QuizScheduleId = x.quiz_schedule_id;
-            this.lesson_Name = x.chapter_name;
-            this.quizeDate = x.scheduled_date;
-          }
-        });
-        this.showSpinner = false;
+    .subscribe(response => {
+      this.quizeData = response.body;
+      console.log('quizeData', this.quizeData);
+      this.quizeData.data.filter((x) => {
+        if(x.quiz_status === 0 && x.entid === parseInt(this.entId)) {
+          this.quizeListData.push(x)
+          this.chapterCode = x.lessons_included;
+          this.duration = x.duration;
+          this.QuizScheduleId = x.quiz_schedule_id;
+          this.lesson_Name = x.chapter_name;
+          this.quizeDate = x.scheduled_date;
+        }
       });
-
+      this.showSpinner = false;
+    });
+    
 
     this.showSpinner = false;
 

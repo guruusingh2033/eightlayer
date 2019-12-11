@@ -41,28 +41,28 @@ export class AppComponent implements OnInit  {
 
   ngOnInit() {
     this.entId = localStorage.getItem("Orgnisation_id");
-    var quizData = electron.ipcRenderer.sendSync('check-quiz-exist', this.entId)
-    console.log("data recieved ", quizData)
-    if (quizData.body.data.length >0 )
-    this.notify()
+
+    electron.ipcRenderer.send('check-quiz-and-notify', this.entId)
+    electron.ipcRenderer.send('schedule-notification', this.entId)
     
-    
+    electron.ipcRenderer.on('scheduled-notification-response', (event, data) => {
+      localStorage.removeItem("scheduled_quiz_lesson");
+      localStorage.setItem("scheduled_quiz_lesson", data[0]['lessons_included'][0]);
+      this.notify();
+    })
 
     notifier.on('start', () => {
+      electron.ipcRenderer.send('show-about-window-event')
       this.zone.run(() => {
         var tokenExists = localStorage.getItem("accessToken");
         if (tokenExists != null && tokenExists != undefined){
-        electron.ipcRenderer.send('show-about-window-event')
         this.router.navigateByUrl('/quiz');
         }
       });
     });
+
     notifier.on('later', () => {
-      var timer = electron.ipcRenderer.sendSync('notification-timer')
-      var quizData = electron.ipcRenderer.sendSync('check-quiz-exist', this.entId)
-      console.log("data recieved2 ", quizData)
-      if (quizData.body.data.length > 0)
-      this.notify()
+      electron.ipcRenderer.send('snooze-notification', this.entId)
     }); 
   }
     //console.log("app.component is calling");

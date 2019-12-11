@@ -135,6 +135,7 @@ export class LoginComponent implements OnInit {
 
   logInData(): any {
     this.showSpinner = true;
+    localStorage.removeItem("scheduled_quiz_lesson");
     this.entid = localStorage.getItem("Orgnisation_id");
     console.log("name = " + this.email + " Password value = " + this.password + " entid = " + localStorage.getItem("Orgnisation_id") + " userrole = " + this.userRole);
     if ((this.userRole === false || this.userRole === '') && !isNullOrUndefined(this.email)) {
