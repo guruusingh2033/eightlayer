@@ -187,7 +187,6 @@ export class LoginComponent implements OnInit {
           }, 1000);
         });
     } else if (this.userRole === true && !isNullOrUndefined(this.email) && !isNullOrUndefined(this.password)) {
-      this.showSpinner = false;
       this.httpClient.post("https://g3052kpia0.execute-api.us-east-1.amazonaws.com/dev/users/signin/",
         {
           // email:'sampleapp53@gmail.com',

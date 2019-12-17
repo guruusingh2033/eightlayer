@@ -43,7 +43,7 @@
 
                       <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" >
                         <div class="form-group">
-                          <input type="checkbox"  name="role" id="role" [(ngModel)]="userRole" (change)="onRoleChange()">Admin Login
+                          <input type="checkbox"  name="role" id="role" [disabled]="showSpinner" [(ngModel)]="userRole" (change)="onRoleChange()">Admin Login
                           <!--<label>User Role</label>
                           <select>
                             <option value="" selected="selected" disabled>Select Role</option>
@@ -84,7 +84,7 @@
                               Password?</a>
                           </div>
                           <div class="col-md-8 col-sm-8 col-xs-8 loginbtn-wrap" style="float: right">
-                            <button id="submitButton" (click)="logInData()"
+                            <button id="submitButton" (click)="logInData()" [disabled]="showSpinner"
                                     onclick="myFun()" type="button" class="btn btn-labeled btn-success">
                               Login
                             </button>

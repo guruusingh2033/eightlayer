@@ -9,6 +9,7 @@ const log = require('electron-log');
 const https = require('https');
 
 // window.ipcRenderer = require('electron').ipcRenderer;
+let tray = null;
 let win;
 // SQLite
 let server = require('./server/eightLayerAppService');
@@ -56,12 +57,19 @@ function createWindow() {
 //win.loadURL(`http://localhost:4200/login`)
   // win.maximize();
   win.hide();
+  tray = new Tray(__dirname + '/src/assets/img/favicon/8-layer-logo-v3.png');
+  tray.setToolTip('EightLayerApp');
+  tray.on('click', () => {
+    win.isVisible() ? win.hide() : win.show()
+  })
   var contextMenu = Menu.buildFromTemplate([{
     label: 'Quit', click: function () {
       app.isQuiting = true;
       app.quit()
     }
   }]);
+  tray.setContextMenu(contextMenu);
+
 //// uncomment below to open the DevTools.
   // win.webContents.openDevTools();
   console.log("process.argv = " + process.argv0);
