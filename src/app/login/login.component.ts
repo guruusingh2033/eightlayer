@@ -134,6 +134,23 @@ export class LoginComponent implements OnInit {
 
 
   logInData(): any {
+
+    var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    if (!EMAIL_REGEXP.test(this.email)){
+      this.redClassBool = false;
+      this.errMessage = 'Invalid Email !';
+      return
+    }
+    
+    if (this.userRole === true && (this.password === undefined || this.password === "")){
+      this.redClassBool = false;
+      this.errMessage = 'Enter Password !';
+      return
+    }
+
+    else{
+      this.redClassBool = true;
+    }
     this.showSpinner = true;
     localStorage.removeItem("scheduled_quiz_lesson");
     this.entid = localStorage.getItem("Orgnisation_id");
@@ -147,8 +164,14 @@ export class LoginComponent implements OnInit {
       this.httpClient.post('https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/clientlogin', data)
         .subscribe((res: any) => {
           console.log('userloginres', res);
-          localStorage.setItem("accessToken", res.data.accessToken);
-          setTimeout(() => {
+          if(res.statusCode === 401){
+            this.errMessage = "This email is not Registered"
+            this.redClassBool = false;
+            this.showSpinner= false;
+          }
+          if(res.data){
+            localStorage.setItem("accessToken", res.data.accessToken);
+            setTimeout(() => {
             this.httpClient.get('https://o9dzztjg31.execute-api.us-east-1.amazonaws.com/dev/userdetails',
               {
                 headers: new HttpHeaders().set('accesstoken', localStorage.getItem("accessToken"))
@@ -185,6 +208,7 @@ export class LoginComponent implements OnInit {
                 }
               });
           }, 1000);
+        }
         });
     } else if (this.userRole === true && !isNullOrUndefined(this.email) && !isNullOrUndefined(this.password)) {
       this.httpClient.post("https://g3052kpia0.execute-api.us-east-1.amazonaws.com/dev/users/signin/",
