@@ -84,8 +84,10 @@ function createWindow() {
   })
 // Event when the window is about to close.
   win.on('close', function (e) {
-    e.preventDefault();
-    win.hide();
+    if (app.isQuiting != true){
+      e.preventDefault();
+      win.hide();
+    }
   })
 // Event when the window minimizes.
   win.on('minimize', function (e) {
