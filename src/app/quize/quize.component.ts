@@ -70,6 +70,7 @@ export class QuizeComponent implements OnInit {
   lesson_Name;
   hideIcon = false;
   quizeDate;
+  dueDate;
   chapterCode;
   attemptQue = 0;
   question = [];
@@ -666,6 +667,13 @@ export class QuizeComponent implements OnInit {
     return new Array(i);
   }
 
+  showLessonInfo(){
+    this.listDiv = false;
+    this.lessonDiv = false;
+    this.lessonSection = false;
+    this.availQuiz = true;
+    this.showSpinner = false;
+  }
   showLesson(chapter_code) {
     this.showSpinner = true;
     console.log('chapter_code',chapter_code);
@@ -681,11 +689,11 @@ export class QuizeComponent implements OnInit {
           this.QuizScheduleId = response.body.data[0].quiz_schedule_id;
           this.showSpinner = false;
         });
-      this.listDiv = false;
-      this.lessonDiv = false;
-      this.lessonSection = false;
-      this.availQuiz = true;
-      this.showSpinner = false;
+      // this.listDiv = false;
+      // this.lessonDiv = false;
+      // this.lessonSection = false;
+      // this.availQuiz = true;
+      // this.showSpinner = false;
       //this.Edata = Array.of(this.Edata);
     }, (error: any) => {
 
@@ -693,19 +701,22 @@ export class QuizeComponent implements OnInit {
 
     });
   }
+
+  getFormattedDate(dateObj){
+    let dateArr = dateObj.toDateString().split(" ");
+    dateArr.shift();
+    dateArr.splice(1, 0, dateArr.shift());
+    return dateArr.join("-");
+  }
   
   ngOnInit() {
     this.showSpinner = true;
-    var lesson = localStorage.getItem("scheduled_quiz_lesson");
-    localStorage.removeItem('scheduled_quiz_lesson');
-
+    let lesson = localStorage.getItem("scheduled_quiz_lesson");
+    this.listDiv = true
     if (lesson != null && lesson != "undefined" && lesson != "null") {
-      this.listDiv = false
       this.showLesson(lesson)
     }
-    else{
-      this.listDiv = true
-    }
+    localStorage.removeItem('scheduled_quiz_lesson');
     this.entId = localStorage.getItem("enterpriseId");
     this.quizService.getChapterList()
     .subscribe(response => {
@@ -716,9 +727,12 @@ export class QuizeComponent implements OnInit {
           this.quizeListData.push(x)
           this.chapterCode = x.lessons_included;
           this.duration = x.duration;
-          this.QuizScheduleId = x.quiz_schedule_id;
+          // this.QuizScheduleId = x.quiz_schedule_id;
           this.lesson_Name = x.chapter_name;
-          this.quizeDate = x.scheduled_date;
+          let sDate = new Date(x.scheduled_date);
+          this.quizeDate = this.getFormattedDate(sDate);
+          sDate.setDate(sDate.getDate() + Number(this.duration));
+          this.dueDate = this.getFormattedDate(sDate);
         }
       });
       this.showSpinner = false;

@@ -5,16 +5,37 @@
 <!-- MAIN PANEL -->
 <div [hidden]="listDiv" class="pull-left">
   <i class="fa fa-arrow-circle-left" title="Back" style="color: white; font-size: 24px; cursor: pointer"
-     (click)="backEvent()"></i>
+    (click)="backEvent()"></i>
 </div>
-<div id="main" role="main">
+<div id="main" role="main" class="p-l-0">
   <!-- MAIN CONTENT -->
 
-  <div id="content">
-    <section>
-      <div class="row" *ngIf="listDiv">
+  <div id="content" class="m-l-r-0">
+    <section class="main-form">
+      <div class="row" *ngIf="listDiv && questionDiv">
+        <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+        <div class="my-row">
+          <div class="heading-main col-xs-12 col-sm-12 col-md-12">
+            {{lesson_Name}}
+          </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
-          <div class="col-md-12 col-sm-12 col-xs-12">
+          <label class="date-label col-xs-6 col-sm-6 col-md-6">Assigned Date:</label>
+          <div class="date-info col-xs-6 col-sm-6 col-md-6">{{quizeDate}}</div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <label class="date-label col-xs-6 col-sm-6 col-md-6">Due Date:</label>
+          <div class="date-info col-xs-6 col-sm-6 col-md-6">{{dueDate}}</div>
+        </div>
+        <div class="btn-row">
+          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                  <button class="equiptBtn" (click)="showLessonInfo()"><span>EQUIPT</span> <span>ME</span></button>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+            <button class="quizBtn" (click)="quizStart()"><span>TAKE</span> <span>QUIZ</span></button>
+          </div>
+        </div>
+        <!-- <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">Quiz List
               </div>
@@ -44,9 +65,9 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- <button (click) = "showMyPop()" data-toggle="modal" data-target="#QuizePopup"></button> -->
-        </div>
+          </div> -->
+        <!-- <button (click) = "showMyPop()" data-toggle="modal" data-target="#QuizePopup"></button> -->
+        <!-- </div> -->
         <!-- <h1>Selecting Number</h1>
         <div>{{expression | json}}</div>
         <input type="checkbox"  (change)="expression && expression.Option1=$event.target.checked ? true : undefiend" [ngModel]="expression?.Option1">
@@ -61,8 +82,8 @@
               <div class="panel-heading clearfix">
                 <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Lesson</h4>
                 <div class="btn-group pull-right">
-                <span (click)="quizStart()"
-                      class="btn btn-header" style="cursor: pointer;" aria-hidden="true">Show Quiz</span>
+                  <span (click)="quizStart()" class="btn btn-header" style="cursor: pointer;" aria-hidden="true">Show
+                    Quiz</span>
                 </div>
               </div>
               <div class="panel-body">
@@ -98,12 +119,12 @@
                       <div class="black-trans-box">
                         <div class="row">
                           <div class="col-md-12"
-                               *ngFor="let Q of counter(Qlength) | paginate: { itemsPerPage: 1, currentPage: p }">
+                            *ngFor="let Q of counter(Qlength) | paginate: { itemsPerPage: 1, currentPage: p }">
                             <!-- <h4 class="m-b-10">Add Question</h4> -->
                             <div class="form-group">
                               <label>Question</label>
                               <input readonly type="text" [ngModel]="myQuizquestion" class="form-control"
-                                     placeholder="Question"/>
+                                placeholder="Question" />
                             </div>
                           </div>
                         </div>
@@ -128,26 +149,20 @@
 
                               <ng-template #type1>
                                 <li>
-                                      <span>
-                                          <input
-                                            (click)="selectedAnswer(answerData[i], i)"
-                                            [checked]="i === myIndex"
-                                            type="radio" name="answer" value="Answer"
-                                            [disabled]="questionDisable === true">
-                                      </span>
+                                  <span>
+                                    <input (click)="selectedAnswer(answerData[i], i)" [checked]="i === myIndex"
+                                      type="radio" name="answer" value="Answer" [disabled]="questionDisable === true">
+                                  </span>
                                   &nbsp;&nbsp;{{answerData[i]}}
                                 </li>
                               </ng-template>
                               <ng-template #type2>
                                 <li>
-                                      <span>
-                                          <input name="type2"
-                                                 type="checkbox"
-                                                 [value]="ansChecked"
-                                                 (change)="selectedAnswertype2(answerData[i], $event, i)"
-                                                 [checked]="findIsChecked(answerData[i])"
-                                                 [disabled]="questionDisable === true">
-                                      </span>&nbsp;&nbsp;{{answerData[i]}}
+                                  <span>
+                                    <input name="type2" type="checkbox" [value]="ansChecked"
+                                      (change)="selectedAnswertype2(answerData[i], $event, i)"
+                                      [checked]="findIsChecked(answerData[i])" [disabled]="questionDisable === true">
+                                  </span>&nbsp;&nbsp;{{answerData[i]}}
 
                                   <!-- <form [formGroup]="myForm">
                                           <div *ngFor="let answerType2 of type2DynamicData">
@@ -219,21 +234,21 @@
                 <div class="table-responsive padding-10">
                   <table class="table table-bordered text-left">
                     <thead>
-                    <tr>
-                      <th>Chapter Name</th>
-<!--                      <th>Schedule Date</th>-->
-                      <th>Quiz Level</th>
-                      <th>Status</th>
+                      <tr>
+                        <th>Chapter Name</th>
+                        <!--                      <th>Schedule Date</th>-->
+                        <th>Quiz Level</th>
+                        <th>Status</th>
 
-                    </tr>
+                      </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>{{lesson_data.chapters_name}}</td>
-<!--                      <td>{{quiz.scheduled_date}}</td>-->
-                      <td>{{userLevel}}</td>
-                      <td>{{currentStatus}}</td>
-                    </tr>
+                      <tr>
+                        <td>{{lesson_data.chapters_name}}</td>
+                        <!--                      <td>{{quiz.scheduled_date}}</td>-->
+                        <td>{{userLevel}}</td>
+                        <td>{{currentStatus}}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -297,5 +312,5 @@
 <!--Quize: Popup -->
 <div *ngIf="ratingModelShow">
   <app-rating [rating]='rating' [itemId]='id' [comments]="comments" [submit]="submit"
-              (ratingClick)='ratingComponentClick($event)'></app-rating>
+    (ratingClick)='ratingComponentClick($event)'></app-rating>
 </div>
