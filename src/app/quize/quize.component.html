@@ -32,7 +32,7 @@
                   <button class="equiptBtn" (click)="showLessonInfo()"><span>EQUIPT</span> <span>ME</span></button>
           </div>
           <div class="col-xs-6 col-sm-6 col-md-6 text-left">
-            <button class="quizBtn" (click)="quizStart()"><span>TAKE</span> <span>QUIZ</span></button>
+            <button class="quizBtn" (click)="quizStart()" [disabled]="disableTakequiz" [ngClass]="{'disable': disableTakequiz==true}"><span>TAKE</span> <span>QUIZ</span></button>
           </div>
         </div>
         <!-- <div class="col-md-12 col-sm-12 col-xs-12">

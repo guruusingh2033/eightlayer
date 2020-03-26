@@ -94,6 +94,7 @@ export class QuizeComponent implements OnInit {
   explanation;
   quizeListData: any = [];
   currentStatus;
+  disableTakequiz: boolean = true;
   constructor(private httpClient: HttpClient, private _fb: FormBuilder,
               private quizService: QuizService,
               private questionService: QuestionService,
@@ -108,6 +109,26 @@ export class QuizeComponent implements OnInit {
     this.userLevelDiv = false;
     this.myQuizquestion = '';
     this.answerData = [];
+  }
+
+  //Check whether quize already taken or not
+  checkQuiz()
+  {
+    this.userID = localStorage.getItem("userId");
+    this.entId = localStorage.getItem("enterpriseId");
+    this.questionService.getQuestion(this.userID, this.chapter_no,this.entId)
+        .subscribe(response => {
+          this.quizeQuestion = response.body;
+            this.finalquizestatus = this.quizeQuestion.finalquizestatus;
+            console.log("finalquizestatus",this.finalquizestatus);
+            if (this.finalquizestatus === 1) {
+              this.disableTakequiz = true;
+            }
+            else
+            {
+              this.disableTakequiz = false;
+            }
+  })
   }
 
   // Quize start
@@ -683,6 +704,7 @@ export class QuizeComponent implements OnInit {
       }).subscribe(response => {
       this.lesson_data = response.data;
       this.chapter_no = this.lesson_data.chapter_code;
+      this.checkQuiz();
       this.quizService.getQuiz(this.chapter_no, parseInt(this.entId))
         .subscribe(response => {
           console.log('getquizresponse', response);
