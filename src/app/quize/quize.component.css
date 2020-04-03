@@ -1,3 +1,18 @@
+/* 03/04/2020 */
+
+h1.chapter_head {
+  text-align: center;
+  font-weight: 700;
+  margin: 0 0 12px;
+  font-size: 32px;
+  display: inline-block;
+  background-color: #3276b1;
+  border-color: #3276b1;
+  padding: 19px 30px;
+  border-radius: 30px;
+  line-height: 1.2;
+}
+
 #content{
   margin-left: -120px;
   margin-right: 80px;
