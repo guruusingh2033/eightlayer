@@ -709,9 +709,19 @@ export class QuizeComponent implements OnInit {
         .subscribe(response => {
           console.log('getquizresponse', response);
           this.QuizScheduleId = response.body.data[0].quiz_schedule_id;
+          this.quizeData.data.filter((x) => {
+            if(this.chapter_no == x.lessons_included[0] && this.lesson_Name == undefined)
+            {
+          this.lesson_Name = x.chapter_name;
+          let sDate = new Date(x.scheduled_date);
+          this.quizeDate = this.getFormattedDate(sDate);
+          sDate.setDate(sDate.getDate() + Number(x.duration));
+          this.dueDate = this.getFormattedDate(sDate);
+            }
+          });
           this.showSpinner = false;
         });
-      // this.listDiv = false;
+        // this.listDiv = false;
       // this.lessonDiv = false;
       // this.lessonSection = false;
       // this.availQuiz = true;
@@ -748,13 +758,13 @@ export class QuizeComponent implements OnInit {
         if(x.quiz_status === 0 && x.entid === parseInt(this.entId)) {
           this.quizeListData.push(x)
           this.chapterCode = x.lessons_included;
-          this.duration = x.duration;
+          // this.duration = x.duration;
           // this.QuizScheduleId = x.quiz_schedule_id;
-          this.lesson_Name = x.chapter_name;
-          let sDate = new Date(x.scheduled_date);
-          this.quizeDate = this.getFormattedDate(sDate);
-          sDate.setDate(sDate.getDate() + Number(this.duration));
-          this.dueDate = this.getFormattedDate(sDate);
+          // this.lesson_Name = x.chapter_name;
+          // let sDate = new Date(x.scheduled_date);
+          // this.quizeDate = this.getFormattedDate(sDate);
+          // sDate.setDate(sDate.getDate() + Number(this.duration));
+          // this.dueDate = this.getFormattedDate(sDate);debugger
         }
       });
       this.showSpinner = false;
