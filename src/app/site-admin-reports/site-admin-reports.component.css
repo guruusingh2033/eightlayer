@@ -1,3 +1,51 @@
 .no-data-available {
     text-align: center;
   }
+
+.ngb-dp-months {
+    background: #fff;
+}
+
+.input-group-append {
+  position: relative;
+}
+
+button.btn.btn-outline-secondary.calendar {
+  background: #fff;
+  border: 0;
+  box-shadow: 0 0 0 !important;
+  width: 40px;
+  border-radius: 0;
+  font-size:13px;
+  color: #333 !important;
+}
+
+::ng-deep .input-group-append .dropdown-menu {
+    width: 100% !important;
+    background: #fff !important;
+  }
+
+::ng-deep  .ngb-dp-month.d-block {
+    width: 100% !important;
+}
+
+::ng-deep .ngb-dp-week.ngb-dp-weekdays.bg-light > div {
+  width: 100%;
+}
+
+::ng-deep .ngb-dp-week > div {
+  width: 100% !important;
+}
+
+::ng-deep button.btn.btn-outline-secondary.calendar:active {
+  top: 0 !important;
+  left:0 !important;
+}
+
+.btn-label{    
+  left: 0 !important;margin-right:5px !important
+}
+
+.input-group-append input {
+  font-size: 12px;
+}

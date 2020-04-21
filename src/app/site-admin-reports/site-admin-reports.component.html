@@ -38,18 +38,22 @@
                                   <div class="col-sm-3 col-xs-6">
                                       <div class="form-group">
                                           <label>From Date</label>
-                                          <!-- <div class="input-group">
-                                              <input class="form-control" id="from" type="text" placeholder="From">
-                                              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                          </div> -->
-                                          <input class="form-control" [(ngModel)]="fromDate" type="date" name="startDate"/>
-                                          <!-- {{fromDate}}                                           -->
+                                        <div class="input-group-append">
+                                        <input class="form-control" placeholder="dd-mm-yyyy" [(ngModel)]="fromDate" ngbDatepicker #d="ngbDatepicker">
+                                       
+                                            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                                          </div>
+
                                       </div>
                                   </div>
                                   <div class="col-sm-3 col-xs-6">
                                       <div class="form-group">
                                           <label>To Date</label>
-                                          <input class="form-control" [(ngModel)]="toDate" type="date" name="toDate"/>
+                                          <div class="input-group-append">
+
+                                          <input class="form-control" placeholder="dd-mm-yyyy" [(ngModel)]="toDate" ngbDatepicker #t="ngbDatepicker">
+                                            <button class="btn btn-outline-secondary calendar" (click)="t.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                                          </div>
                                           <!-- {{toDate}} -->
                                           <!-- <div class="input-group">
                                               <input class="form-control" id="to" type="text" placeholder="Select a date">
@@ -109,6 +113,7 @@
                                         <tr>
                                             <th>Date</th>
                                             <th>User Name</th>
+                                            <th>Chapter Name</th>
                                             <th>Status</th>
                                             <th>Email</th>
                                         </tr>
@@ -125,6 +130,7 @@
                                                         <tr>
                                                             <td>{{user.date_time | date}}</td>
                                                             <td>{{user.user_name}}</td>
+                                                            <td>{{user.chapter_name}}</td>
                                                             <td>{{user.scheduled_status}}</td>
                                                             <td>{{user.email}}</td>
                                                         </tr>

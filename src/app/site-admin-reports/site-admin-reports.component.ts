@@ -1,10 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ObjNgFor } from '../client-enterprise/myPipe';
+import {NgbDateStruct, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      let date = value.split(this.DELIMITER);
+      return {
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
+
 @Component({
   selector: 'app-site-admin-reports',
   templateUrl: './site-admin-reports.component.html',
-  styleUrls: ['./site-admin-reports.component.css']
+  styleUrls: ['./site-admin-reports.component.css'],
+  providers: [
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class SiteAdminReportsComponent implements OnInit {
   
@@ -17,6 +44,7 @@ export class SiteAdminReportsComponent implements OnInit {
   userType:any;
   userHead = "";
   public showSpinner:boolean = false;
+  model: NgbDateStruct;
   constructor(private httpClient: HttpClient) {
 
     this.startDate = new Date('2005/02/02');
@@ -32,10 +60,35 @@ export class SiteAdminReportsComponent implements OnInit {
   get humanDate(){
     return this.startDate.toISOString().substring(0, 10);
   }
+
+//format date
+formatDate(date: any, increment: any)
+{
+
+let monthZero = '';
+let dayZero = '';
+if(date.month < 10)
+{
+  monthZero = '0'
+}
+if(date.day < 10)
+{
+  dayZero = '0'
+}
+
+let dte = parseInt(date.day);
+let finalData: number = dte + increment;
+let finalDate = date.year + '-' + monthZero + date.month + '-' + dayZero + String(finalData);
+return finalDate;
+}
+
 /*for complian Users*/
 
   compliantUser()
   {
+    let fromDate = this.formatDate(this.fromDate, 0)
+    let toDate = this.formatDate(this.toDate, 1)
+
     this.showSpinner = true
 this.userHead = "Compliant"
 if(this.fromDate && this.toDate){
@@ -43,7 +96,7 @@ if(this.fromDate && this.toDate){
   this.entId = localStorage.getItem("enterpriseId");
   console.log("from date ",this.fromDate, "to Date", this.toDate, "this.entId",this.entId);
  
-  this.httpClient.get('https://2gs6fkutxh.execute-api.us-east-1.amazonaws.com/dev/reports/'+this.entId+'/users/quizreport?type=compliant&start_date='+this.fromDate+'&end_date='+this.toDate,
+  this.httpClient.get('https://2gs6fkutxh.execute-api.us-east-1.amazonaws.com/dev/reports/'+this.entId+'/users/quizreport?type=compliant&start_date='+fromDate+'&end_date='+toDate,
   {
     headers: new HttpHeaders().set('accesstoken', localStorage.getItem("accessToken"))
   }).subscribe((data: any) => {
@@ -71,13 +124,15 @@ alert("Please enter date");
   /*for non_complian Users*/
   nonCompliantUser()
   {
+    let fromDate = this.formatDate(this.fromDate, 0)
+    let toDate = this.formatDate(this.toDate, 1)
     this.showSpinner = true
     this.userHead = "Noncompliant"    
     if(this.fromDate && this.toDate){
 
       this.entId = localStorage.getItem("enterpriseId");
-      console.log("from date ",this.fromDate, "to Date", this.toDate, "this.entId",this.entId);
-      this.httpClient.get('https://2gs6fkutxh.execute-api.us-east-1.amazonaws.com/dev/reports/'+this.entId+'/users/quizreport?type=non_compliant&start_date='+this.fromDate+'&end_date='+this.toDate,
+      console.log("from date ",fromDate, "to Date", toDate, "this.entId",this.entId);
+      this.httpClient.get('https://2gs6fkutxh.execute-api.us-east-1.amazonaws.com/dev/reports/'+this.entId+'/users/quizreport?type=non_compliant&start_date='+fromDate+'&end_date='+toDate,
       {
         headers: new HttpHeaders().set('accesstoken', localStorage.getItem("accessToken"))
       }).subscribe((data: any) => {
