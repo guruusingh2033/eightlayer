@@ -26,12 +26,14 @@ export class ScheduleComponent implements OnInit {
   currentent: any;
   currentChapter: any;
   date = new Date();
+  deleteScheduleId: any;
 
   @ViewChild('scheduled_date') chapterScheduleDate;
   constructor(private httpClient: HttpClient,
               private lessonScheduleService: QuizService) { }
 
   ngOnInit() {
+    this.getCurrectFormatedDate();
     this.showSpinner = true;
     this.httpClient.get<any>('https://g3052kpia0.execute-api.us-east-1.amazonaws.com/dev/enterprises/',
       {
@@ -57,6 +59,46 @@ export class ScheduleComponent implements OnInit {
         (error: any) => {
           console.log("error of put" + error);
         })
+  }
+
+  //find quiz duration
+  getDateRange(scheduled_date: any, duration: any)
+  {
+    var result = new Date(new Date(scheduled_date).setDate(new Date(scheduled_date).getDate() + parseInt(duration)));
+    var finalDate = result.toISOString().substr(0, 10);
+    return finalDate;
+  }
+
+  //delete
+  deleteSchedule(deleteScheduleId: any)
+  {
+    this.deleteScheduleId = deleteScheduleId;
+  }
+
+  scheduleRemoveData() {
+    console.log("entid: ",this.entid);
+    console.log("this.deleteScheduleId", this.deleteScheduleId)
+    this.showSpinner = true;
+    this.httpClient.delete('https://o9dzztjg31.execute-api.us-east-1.amazonaws.com/dev/schedules/quizzes/' + this.entid + '/' + this.deleteScheduleId, {
+      headers: new HttpHeaders().set('accesstoken', localStorage.getItem("accessToken"))
+    }).subscribe(
+      result => {
+        alert("Deleted successfully");
+        console.log(result)
+        this.getQuizedata();
+        this.showSpinner = false;
+
+      },
+      error => {console.log("error while deleting: ", error)}
+    );
+
+  }
+
+  getCurrectFormatedDate()
+  {
+    var result = new Date();
+    var finalDate = result.toISOString().substr(0, 10);
+    return finalDate;
   }
 
   onEntChange(event) {

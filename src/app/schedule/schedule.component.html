@@ -56,6 +56,9 @@
                         <th>Chapter Name</th>
                         <th>Quiz Duration</th>
                         <th>Schedule Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
                       </tr>
                       </thead>
                       <tbody>
@@ -63,6 +66,10 @@
                         <td>{{currentChapter.chapters_name}}</td>
                         <td>{{quize.duration}}</td>
                         <td>{{quize.scheduled_date}}</td>
+                        <td *ngIf="quize.scheduled_date <= getCurrectFormatedDate() && getCurrectFormatedDate() <= getDateRange(quize.scheduled_date, quize.duration)">Active</td><td *ngIf="quize.scheduled_date > getCurrectFormatedDate() || getCurrectFormatedDate() > getDateRange(quize.scheduled_date, quize.duration)">Inactive</td>
+                        <td> <i title="Delete Schedule" style="cursor: pointer"
+                          (click)="deleteSchedule(quize.quiz_schedule_id)" data-toggle="modal"
+                          data-target="#scheduleConfirmDelete" class="fa fa-trash"></i></td>
                       </tr>
                       </tbody>
                     </table>
@@ -74,6 +81,28 @@
         </article>
       </div>
     </section>
+  </div>
+</div>
+
+ <!--delete Popup -->
+ <div id="scheduleConfirmDelete" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete</h4>
+      </div>
+      <div class="modal-body">
+        <p class="enterpriseDelete">Are you sure you want to delete</p>
+        <input type="hidden" [(ngModel)]="deleteScheduleID" class="form-control"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button (click)="scheduleRemoveData()" type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+
   </div>
 </div>
 

@@ -118,9 +118,14 @@ export class QuizeComponent implements OnInit {
     this.entId = localStorage.getItem("enterpriseId");
     this.questionService.getQuestion(this.userID, this.chapter_no,this.entId)
         .subscribe(response => {
+          if(response == 'Quize not started yet')
+          {
+            alert('Quize not started yet')
+          }
+          else
+          {
           this.quizeQuestion = response.body;
             this.finalquizestatus = this.quizeQuestion.finalquizestatus;
-            console.log("finalquizestatus",this.finalquizestatus);
             if (this.finalquizestatus === 1) {
               this.disableTakequiz = true;
             }
@@ -128,6 +133,7 @@ export class QuizeComponent implements OnInit {
             {
               this.disableTakequiz = false;
             }
+          }
   })
   }
 
@@ -158,7 +164,7 @@ export class QuizeComponent implements OnInit {
           console.log('response',response);
           if(response.statusCode === 200) {
             this.currentStatus = "Running";
-            if (response.body.data.length <= 0) {
+            if (response.body.data.length <= 0 || response === 'Quize not started yet') {
               alert('Quize not started yet');
             }
             this.quizeQuestion = response.body;
@@ -709,16 +715,21 @@ export class QuizeComponent implements OnInit {
         .subscribe(response => {
           console.log('getquizresponse', response);
           this.QuizScheduleId = response.body.data[0].quiz_schedule_id;
-          this.quizeData.data.filter((x) => {
-            if(this.chapter_no == x.lessons_included[0] && this.lesson_Name == undefined)
-            {
-          this.lesson_Name = x.chapter_name;
-          let sDate = new Date(x.scheduled_date);
+          // this.quizeData.data.filter((x) => {
+          //   if(this.chapter_no == x.lessons_included[0] && this.lesson_Name == undefined)
+          //   {
+          // this.lesson_Name = x.chapter_name;
+          // let sDate = new Date(x.scheduled_date);
+          // this.quizeDate = this.getFormattedDate(sDate);
+          // sDate.setDate(sDate.getDate() + Number(x.duration));
+          // this.dueDate = this.getFormattedDate(sDate);
+          //   }
+          // });
+          this.lesson_Name = response.body.data[0].chapter_name;
+          let sDate = new Date(response.body.data[0].scheduled_date);
           this.quizeDate = this.getFormattedDate(sDate);
-          sDate.setDate(sDate.getDate() + Number(x.duration));
+          sDate.setDate(sDate.getDate() + Number(response.body.data[0].duration));
           this.dueDate = this.getFormattedDate(sDate);
-            }
-          });
           this.showSpinner = false;
         });
         // this.listDiv = false;

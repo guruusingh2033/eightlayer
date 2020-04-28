@@ -181,7 +181,9 @@ ul {
     /* float: left; */
     width: 100%;
 }
-
+.my-row {
+  width: 100%;
+}
 @media(max-width:979px){
 .m-l-r-0{
         margin-left: 0px !important;
