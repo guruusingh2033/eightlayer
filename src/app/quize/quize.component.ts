@@ -83,6 +83,7 @@ export class QuizeComponent implements OnInit {
   lesson_data: any = [];
   scheduledLesson: any = [];
   availQuiz = false;
+  backQuize = false;
   quizScheduleId;
   finalquizestatus;
   // showLevel = false;
@@ -102,13 +103,14 @@ export class QuizeComponent implements OnInit {
   }
 
   backEvent() {
-    this.listDiv = true;
-    this.lessonDiv = true;
+    this.listDiv = true;    
+    this.questionDiv = this.lessonDiv = (this.backQuize) ? false : true;
     this.questionSection = true;
     this.lessonSection = false;
     this.userLevelDiv = false;
     this.myQuizquestion = '';
     this.answerData = [];
+    this.backQuize = false;
   }
 
   //Check whether quize already taken or not
@@ -142,6 +144,7 @@ export class QuizeComponent implements OnInit {
     console.log("quizScheduleId = " + this.QuizScheduleId);
     this.myIndex = !this.myIndex;
     this.availQuiz = true;
+    this.backQuize = true;
     this.lessonSection = true;
     this.questionSection = false;
     this.showSpinner = true;
@@ -759,7 +762,7 @@ export class QuizeComponent implements OnInit {
     if (lesson != null && lesson != "undefined" && lesson != "null") {
       this.showLesson(lesson)
     }
-    localStorage.removeItem('scheduled_quiz_lesson');
+    // localStorage.removeItem('scheduled_quiz_lesson');
     this.entId = localStorage.getItem("enterpriseId");
     this.quizService.getChapterList()
     .subscribe(response => {

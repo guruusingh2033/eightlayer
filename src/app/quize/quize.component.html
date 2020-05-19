@@ -3,7 +3,7 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 <!-- MAIN PANEL -->
-<div [hidden]="listDiv" class="pull-left">
+<div [hidden]="(listDiv && questionDiv)" class="pull-left">
   <i class="fa fa-arrow-circle-left" title="Back" style="color: white; font-size: 24px; cursor: pointer"
     (click)="backEvent()"></i>
 </div>
