@@ -20,6 +20,8 @@ import { SiteAdminFeedbackComponent } from './site-admin-feedback/site-admin-fee
 import { SiteAdminReportsComponent } from './site-admin-reports/site-admin-reports.component';
 import {ScheduleComponent} from "./schedule/schedule.component";
 import {LessonListComponent} from "./lesson-list/lesson-list.component";
+import { QuizResultComponent } from './quiz-result/quiz-result.component';
+import {RatingComponent} from "./rating/rating.component";
 
 
 const routes: Routes = [
@@ -43,7 +45,9 @@ const routes: Routes = [
     { path: 'SiteAdminConfig', component: SiteAdminConfigComponent, pathMatch: 'full' },
     { path: 'SiteAdminFeedback', component: SiteAdminFeedbackComponent, pathMatch: 'full' },
     { path: 'SiteAdminReports', component: SiteAdminReportsComponent, pathMatch: 'full' },
-    { path: 'schedule', component: ScheduleComponent, pathMatch: 'full' }
+    { path: 'schedule', component: ScheduleComponent, pathMatch: 'full' },
+    { path: 'result/:score/:quizid/:chaptercode', component: QuizResultComponent, pathMatch: 'full' },
+    { path: 'rating/:quizid/:chaptercode', component: RatingComponent, pathMatch: 'full' }
 
 
 

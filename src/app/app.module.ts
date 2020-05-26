@@ -47,6 +47,7 @@ import {QuizService} from "../services/quiz.service";
 import {LessonListComponent} from "./lesson-list/lesson-list.component";
 import {QuestionService} from "../services/question.service";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { QuizResultComponent } from './quiz-result/quiz-result.component';
 declare var $: any;
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ declare var $: any;
     SiteAdminReportsComponent,
     RatingComponent,
     ScheduleComponent,
-    LessonListComponent
+    LessonListComponent,
+    QuizResultComponent
   ],
   imports: [
     BrowserModule,

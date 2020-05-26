@@ -223,7 +223,7 @@
       </div>
       <!-- end row -->
     </section>
-    <section>
+    <!-- <section>
       <div class="row" *ngIf="userLevelDiv">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -235,18 +235,18 @@
                   <table class="table table-bordered text-left">
                     <thead>
                       <tr>
-                        <th>Chapter Name</th>
+                        <th>Chapter Name</th> -->
                         <!--                      <th>Schedule Date</th>-->
-                        <th>Quiz Level</th>
+                        <!-- <th>Quiz Level</th>
                         <th>Status</th>
 
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{lesson_data.chapters_name}}</td>
+                        <td>{{lesson_data.chapters_name}}</td> -->
                         <!--                      <td>{{quiz.scheduled_date}}</td>-->
-                        <td>{{userLevel}}</td>
+                        <!-- <td>{{userLevel}}</td>
                         <td>{{currentStatus}}</td>
                       </tr>
                     </tbody>
@@ -254,15 +254,15 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- <button (click) = "showMyPop()" data-toggle="modal" data-target="#QuizePopup"></button> -->
-        </div>
+        <!-- </div> -->
         <!-- <h1>Selecting Number</h1>
         <div>{{expression | json}}</div>
         <input type="checkbox"  (change)="expression && expression.Option1=$event.target.checked ? true : undefiend" [ngModel]="expression?.Option1">
         <input type="checkbox"   (change)="expression && expression.Option2=$event.target.checked ? true : undefiend" [ngModel]="expression?.Option2"> -->
-      </div>
-    </section>
+      <!-- </div>
+    </section> -->
   </div>
   <!-- END MAIN CONTENT -->
 </div>
@@ -310,7 +310,7 @@
   </div>
 </div>
 <!--Quize: Popup -->
-<div *ngIf="ratingModelShow">
+<!-- <div *ngIf="ratingModelShow">
   <app-rating [rating]='rating' [itemId]='id' [comments]="comments" [submit]="submit"
     (ratingClick)='ratingComponentClick($event)'></app-rating>
-</div>
+</div> -->

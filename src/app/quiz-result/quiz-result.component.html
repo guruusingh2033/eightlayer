@@ -1,0 +1,60 @@
+<app-clientside></app-clientside>
+<div *ngIf="showSpinner">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<section>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-primary scoretable">
+              <div class="panel-heading">Scores
+              </div>
+              <div class="panel-body">
+                <div class="table-responsive padding-10">
+                  <!-- <table class="table table-bordered text-left">
+                    <thead>
+                      <tr>
+                        <th>Your Score</th>
+                        <th>Average Score</th>
+                        <th>Highest Score</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{score}}</td>
+                        <td>{{avgScore}}</td>
+                        <td>{{highestScore}}</td>
+                      </tr>
+                    </tbody>
+                  </table> -->
+
+                  <div class="quiz_results">
+                    <div class="q_your_score">
+                      <div class="q_r_inner">
+                        <strong>Your Score</strong><span>{{score}}</span>
+                      </div>
+                    </div>
+                    <div class="q_average_score">
+                      <div class="q_r_inner">
+                        <strong>Average Score</strong><span>{{avgScore}}</span>
+                      </div>
+                    </div>
+                    <div class="q_highest_score">
+                      <div class="q_r_inner">
+                        <strong>Highest Score</strong><span>{{highestScore}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+              </div>
+            </div>
+    </section>
+
+  <section>
+    <div (click)="takeASurvey()" class="takesurveybtn"><i class="fa fa-comments"></i>Take a Survey</div>
+  </section>

@@ -99,7 +99,8 @@ export class QuizeComponent implements OnInit {
   constructor(private httpClient: HttpClient, private _fb: FormBuilder,
               private quizService: QuizService,
               private questionService: QuestionService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private router: Router) {
   }
 
   backEvent() {
@@ -113,7 +114,7 @@ export class QuizeComponent implements OnInit {
     this.backQuize = false;
   }
 
-  //Check whether quize already taken or not
+    //Check whether quize already taken or not
   checkQuiz()
   {
     this.userID = localStorage.getItem("userId");
@@ -305,7 +306,8 @@ export class QuizeComponent implements OnInit {
       ).subscribe((data: any) => {
         console.log(data);
         this.currentStatus = "Completed";
-        this.ratingModelShow = true;
+        // this.ratingModelShow = true;
+        
         /*questionsengagement*/
 
         // this.httpClient.post('https://2gs6fkutxh.execute-api.us-east-1.amazonaws.com/dev/reports/' + this.entId + '/users/' + this.userID + '/quizzes/' + this.QuizScheduleId + '/questionsengagement',
@@ -318,7 +320,7 @@ export class QuizeComponent implements OnInit {
 
           // console.log("questionsengagement is calling==>", data)
           // this.ratingModelShow = true;
-          this.showSpinner = false;
+          // this.showSpinner = false;
         // }, (error: any) => {
         //
         //   console.log("error = " + error);
@@ -336,12 +338,26 @@ export class QuizeComponent implements OnInit {
           console.log('data', data);
           let userLevel;
           userLevel = data;
-          // this.userLevel = userLevel.data.user_level
-          console.log("userLevel is calling==>", this.userLevel);
+          this.userLevel = userLevel.data.user_level
+          console.log("userLevel is calling==>", this.userLevel);          
+      
+      let changeStatus = {
+        "quiz_schedule_id": this.QuizScheduleId,
+        "userid": this.userID,
+        "quiz_score": this.userLevel
+      };
+      console.log('changeStatus', changeStatus);
+      this.httpClient.post('https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/changequizestatus', changeStatus)
+        .subscribe((response) => {
+          this.hideIcon = true;
+          console.log("After change status", response);
           this.showSpinner = false;
-          this.redClassBool = true;
+          this.router.navigate(['result', this.userLevel, this.QuizScheduleId, this.chapterCode[0]]);
+        });
+          // this.showSpinner = false;
+          this.redClassBool = true;          
 
-
+          
         }, (error: any) => {
 
           console.log("error of enterprise == " + error.message);
@@ -357,15 +373,6 @@ export class QuizeComponent implements OnInit {
 
 
       this.quizStatus = "Complete";
-      let changeStatus = {
-        "quiz_schedule_id": this.QuizScheduleId,
-        "userid": this.userID
-      };
-      console.log('changeStatus', changeStatus);
-      this.httpClient.post('https://gvb0azqv1e.execute-api.us-east-1.amazonaws.com/dev/changequizestatus', changeStatus)
-        .subscribe((response) => {
-          this.hideIcon = true;
-        });
       this.questionSection = true;
 
     } else {
@@ -849,7 +856,7 @@ export class QuizeComponent implements OnInit {
         this.userLevelDiv = true;
       });
     if (this.ratingClicked.submit === true) {
-      this.ratingModelShow = false;
+      // this.ratingModelShow = false;
       // this.showLevel = true;
     }
 

@@ -1,3 +1,8 @@
+<app-clientside></app-clientside>
+<div *ngIf="showSpinner">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
 <div class="modal-dialog quizeDialog">
      <!-- Modal content-->
      <div class="modal-content">
@@ -20,7 +25,7 @@
          </div>
          <div class="form-group" style="margin-top: 50px;">
            <label>Comment</label>
-           <textarea rows="3" cols="5" class="form-control" [(ngModel)]="comments"></textarea>
+           <textarea rows="3" cols="5" class="form-control" (change)="comments($event)"></textarea>
          </div>
 
 
